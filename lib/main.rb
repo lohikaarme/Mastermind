@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-# mastermind exercise to replicate the classic game 
+# mastermind exercise to replicate the classic game
 
 require 'pry-byebug'
-require_relative 'game.rb'
-require_relative 'board.rb'
-require_relative 'player.rb'
-require_relative 'render.rb'
+require_relative 'game'
+require_relative 'board'
+require_relative 'player'
+require_relative 'render'
 
 # binding.pry
 
