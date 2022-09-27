@@ -13,5 +13,9 @@ require_relative 'render.rb'
 def game_start
   game = Game.new
   game.play
-  # logic to play game again
+  # logic to play_again
+end
+
+def play_again
+  # get prompt
 end
