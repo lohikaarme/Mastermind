@@ -36,6 +36,3 @@ class Board
     HEREDOC
   end
 end
-
-# test = Board.new
-# test.print_board(test)

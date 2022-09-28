@@ -19,3 +19,10 @@ end
 def play_again
   # get prompt
 end
+
+# RD = Red
+# BU = Blue
+# YW = Yellow
+# GN = Green
+# WH = White
+# BK = Black

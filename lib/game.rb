@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
+require_relative 'board'
+
 # Game logic
 class Game
   def initialize
     @board = Board.new
+    @key = []
     @code_breaker = 'Human'
     @code_maker = 'AI'
+    @@code_pegs = %w[RD BU YW GN WH BK]
   end
 
   def play
@@ -23,5 +27,13 @@ class Game
     # board with updated reference printed
     # game checks for win/lose condition condition
     # next turn
+  end
+
+  def ai_key(pegs)
+    @key = []
+    pegs.times do
+      @key << @@code_pegs.sample
+    end
+    p @key
   end
 end
