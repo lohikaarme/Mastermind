@@ -10,11 +10,12 @@ class Game
     @code_breaker = 'Human'
     @code_maker = 'AI'
     @code_pegs = %w[RD BU YW GN WH BK]
+    @pegs = 4 # assuming 4 slots for guesses
   end
 
   def play
     # setup
-    ai_key(4)
+    ai_key(@pegs)
     # render board
     @board.print_board
     # computer turn(maybe in setup?)
@@ -34,7 +35,12 @@ class Game
   def ai_key(pegs)
     @key = []
     pegs.times do
-      @key << @@code_pegs.sample
+      @key << @code_pegs.sample
     end
   end
+
+  def player_turn
+
+  end
+
 end
