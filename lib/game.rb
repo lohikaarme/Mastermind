@@ -20,6 +20,7 @@ class Game
     @board.print_board
     # computer turn(maybe in setup?)
     # player turns
+    player_turn(@pegs)
     # end_game
   end
 
@@ -39,7 +40,13 @@ class Game
     end
   end
 
-  def player_turn
+  def player_turn(pegs)
+    @turn = []
+    puts "Select #{pegs} colors from: #{@code_pegs}"
+    pegs.times do
+      @turn << gets.chomp # .match(@code_pegs), need to sanitize the input
+    end
+    p @turn
 
   end
 
