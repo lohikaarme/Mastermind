@@ -9,12 +9,14 @@ class Game
     @key = []
     @code_breaker = 'Human'
     @code_maker = 'AI'
-    @@code_pegs = %w[RD BU YW GN WH BK]
+    @code_pegs = %w[RD BU YW GN WH BK]
   end
 
   def play
     # setup
+    ai_key(4)
     # render board
+    @board.print_board
     # computer turn(maybe in setup?)
     # player turns
     # end_game
@@ -34,6 +36,5 @@ class Game
     pegs.times do
       @key << @@code_pegs.sample
     end
-    p @key
   end
 end

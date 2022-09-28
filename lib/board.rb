@@ -5,12 +5,12 @@ class Board
   attr_reader :board, :reference, :key
 
   def initialize
-    @board = Array.new(12, Array.new(4, [nil]))
-    @reference = Array.new(12, Array.new(4, [nil]))
-    @key = Array.new(4, [nil])
+    @board = Array.new(12, Array.new(4, nil))
+    @reference = Array.new(12, Array.new(4, nil))
+    @key = Array.new(4, nil)
   end
 
-  def print_board(_board)
+  def print_board
     puts <<-HEREDOC
  _|      _|                        _|                                          _|                  _|
  _|_|  _|_|    _|_|_|    _|_|_|  _|_|_|_|    _|_|    _|  _|_|  _|_|_|  _|_|        _|_|_|      _|_|_|
@@ -36,3 +36,6 @@ class Board
     HEREDOC
   end
 end
+
+# test = Board.new
+# test.print_board

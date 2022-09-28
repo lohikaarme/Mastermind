@@ -26,3 +26,5 @@ end
 # GN = Green
 # WH = White
 # BK = Black
+
+game_start
