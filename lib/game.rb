@@ -52,12 +52,19 @@ class Game
 
   def code_checker(key, turn)
     @reference = []
+    bk_reference = []
+    wh_reference = []
     # return stmt to add  key == turn
     turn.each_with_index do |turn_el, turn_i|
       key.each_with_index do |key_el, key_i|
-        @reference << 'BK' if turn_el == key_el && turn_i == key_i
+        if turn_el == key_el && turn_i == key_i
+          bk_reference << key_i
+        elsif turn_el == key_el
+          wh_reference << key_i
+        end
       end
     end
+    @reference << bk_reference + wh_reference.uniq
     p @reference
   end
 end
