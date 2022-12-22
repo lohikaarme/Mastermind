@@ -8,8 +8,6 @@ require_relative 'board'
 require_relative 'player'
 require_relative 'render'
 
-# binding.pry
-
 def game_start
   game = Game.new
   game.play

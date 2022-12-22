@@ -21,6 +21,7 @@ class Game
     # computer turn(maybe in setup?)
     # player turns
     player_turn(@pegs)
+    code_checker(@key, @turn)
     # end_game
   end
 
@@ -47,7 +48,16 @@ class Game
       @turn << gets.chomp # .match(@code_pegs), need to sanitize the input
     end
     p @turn
-
   end
 
+  def code_checker(key, turn)
+    @reference = []
+    # return stmt to add  key == turn
+    turn.each_with_index do |turn_el, turn_i|
+      key.each_with_index do |key_el, key_i|
+        @reference << 'BK' if turn_el == key_el && turn_i == key_i
+      end
+    end
+    p @reference
+  end
 end
