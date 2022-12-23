@@ -55,8 +55,8 @@ class Game
     bk_reference = []
     wh_reference = []
     # return stmt to add  key == turn
-    turn.each_with_index do |turn_el, turn_i|
-      key.each_with_index do |key_el, key_i|
+    key.each_with_index do |key_el, key_i|
+      turn.each_with_index do |turn_el, turn_i|
         if turn_el == key_el && turn_i == key_i
           bk_reference << key_i
         elsif turn_el == key_el
@@ -64,7 +64,13 @@ class Game
         end
       end
     end
-    @reference << bk_reference + wh_reference.uniq
-    p @reference
+    wh_reference -= bk_reference # removes duplicate values from WH
+    bk_reference.uniq.count.times do
+      @reference << 'BK'
+    end
+    p wh_reference.uniq.count
+    wh_reference.uniq.count.times do
+      @reference << 'WH'
+    end
   end
 end
