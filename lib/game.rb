@@ -4,6 +4,8 @@ require_relative 'board'
 
 # Game logic
 class Game
+  attr_reader :turn_num
+
   def initialize
     @board = Board.new
     @key = []
@@ -11,6 +13,7 @@ class Game
     @code_maker = 'AI'
     @code_pegs = %w[RD BU YW GN WH BK]
     @pegs = 4 # assuming 4 slots for guesses
+    @turn_num = 0
   end
 
   def play
@@ -21,7 +24,9 @@ class Game
     # computer turn(maybe in setup?)
     # player turns
     player_turn(@pegs)
-    code_checker(@key, @turn)
+    code_update(@key, @turn)
+    @board.update(@turn)
+    @reference.update(@code_reference)
     # end_game
   end
 
@@ -50,27 +55,31 @@ class Game
     p @turn
   end
 
-  def code_checker(key, turn)
-    @reference = []
-    bk_reference = []
-    wh_reference = []
-    # return stmt to add  key == turn
+  def code_update(key, turn)
+    @code_reference = []
+    black = []
+    white = []
     key.each_with_index do |key_el, key_i|
       turn.each_with_index do |turn_el, turn_i|
         if turn_el == key_el && turn_i == key_i
-          bk_reference << key_i
+          black << key_i
         elsif turn_el == key_el
-          wh_reference << key_i
+          white << key_i
         end
       end
     end
-    wh_reference -= bk_reference # removes duplicate values from WH
-    bk_reference.uniq.count.times do
-      @reference << 'BK'
+    @code_reference = reference_convert(black, white)
+  end
+
+  def reference_convert(black, white)
+    coded = []
+    white -= black # removes duplicate values from white
+    black.uniq.count.times do
+      coded << 'BK'
     end
-    p wh_reference.uniq.count
-    wh_reference.uniq.count.times do
-      @reference << 'WH'
+    white.uniq.count.times do
+      coded << 'WH'
     end
+    coded
   end
 end
