@@ -89,6 +89,5 @@ class Game
   def win_check(turn, key)
     @game = false if turn == key
     @turn_num += 1
-  end 
-
+  end
 end
