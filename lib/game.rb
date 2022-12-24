@@ -25,8 +25,9 @@ class Game
     # player turns
     player_turn(@pegs)
     code_update(@key, @turn)
-    @board.update(@turn)
-    @reference.update(@code_reference)
+    @board.update_board(@turn, @turn_num)
+    @board.update_reference(@code_reference, @turn_num)
+    @board.print_board
     # end_game
   end
 

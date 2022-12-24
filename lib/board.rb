@@ -2,7 +2,7 @@
 
 # Game board
 class Board
-  attr_reader :board, :reference, :key
+  attr_accessor :board, :reference, :key
 
   def initialize
     @board = Array.new(12, Array.new(4, nil))
@@ -35,6 +35,16 @@ class Board
  12 |  #{@board[11]}        #{@reference[11]}
     HEREDOC
   end
+end
+
+public
+
+def update_board(turn, turn_num)
+  @board[turn_num] = turn
+end
+
+def update_reference(code, turn_num)
+  @reference[turn_num] = code
 end
 
 # test = Board.new
