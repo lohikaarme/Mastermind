@@ -4,21 +4,22 @@ require_relative 'board'
 
 # Game logic
 class Game
-  attr_reader :turn_num
+  attr_reader :game, :turn_num
 
   def initialize
+    @game = true
     @board = Board.new
     @key = []
     @code_breaker = 'Human'
     @code_maker = 'AI'
     @code_pegs = %w[RD BU YW GN WH BK]
     @pegs = 4 # assuming 4 slots for guesses
+    ai_key(@pegs)
     @turn_num = 0
   end
 
   def play
     # setup
-    ai_key(@pegs)
     # render board
     @board.print_board
     # computer turn(maybe in setup?)
@@ -28,6 +29,7 @@ class Game
     @board.update_board(@turn, @turn_num)
     @board.update_reference(@code_reference, @turn_num)
     @board.print_board
+    win_check(@turn, @key)
     # end_game
   end
 
@@ -83,4 +85,10 @@ class Game
     end
     coded
   end
+
+  def win_check(turn, key)
+    @game = false if turn == key
+    @turn_num += 1
+  end 
+
 end
