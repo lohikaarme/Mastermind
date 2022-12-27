@@ -10,6 +10,8 @@ class Board
     @key = Array.new(4, nil)
   end
 
+  # rubocop:disable Metrics/AbcSize
+
   def print_board
     puts <<-HEREDOC
  _|      _|                        _|                                          _|                  _|
@@ -36,6 +38,8 @@ class Board
     HEREDOC
   end
 end
+
+# rubocop:enable Metrics/AbcSize
 
 public
 

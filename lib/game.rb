@@ -25,21 +25,12 @@ class Game
     # computer turn(maybe in setup?)
     # player turns
     player_turn(@pegs)
-    code_update(@key, @turn)
+    @code_reference = code_update(@key, @turn)
     @board.update_board(@turn, @turn_num)
     @board.update_reference(@code_reference, @turn_num)
     @board.print_board
     win_check(@turn, @key)
     # end_game
-  end
-
-  def turn
-    # player enters guess of 4 pegs
-    # peg layout is checked against key
-    # reference based on number of correct colours and/or locations added to reference
-    # board with updated reference printed
-    # game checks for win/lose condition condition
-    # next turn
   end
 
   def ai_key(pegs)
@@ -58,8 +49,9 @@ class Game
     p @turn
   end
 
+  # rubocop:disable Metrics/MethodLength
+
   def code_update(key, turn)
-    @code_reference = []
     black = []
     white = []
     key.each_with_index do |key_el, key_i|
@@ -71,8 +63,10 @@ class Game
         end
       end
     end
-    @code_reference = reference_convert(black, white)
+    reference_convert(black, white)
   end
+
+  # rubocop:enable Metrics/MethodLength
 
   def reference_convert(black, white)
     coded = []
