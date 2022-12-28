@@ -68,6 +68,8 @@ class Game
     end
   end
 
+  def ai_turn; end
+
   def human_key(pegs)
     @key = []
     puts "Please select #{pegs} pegs from #{@code_pegs}"
