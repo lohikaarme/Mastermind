@@ -2,7 +2,7 @@
 
 # mastermind exercise to replicate the classic game
 
-require 'pry-byebug'
+# require 'pry-byebug'
 require_relative 'game'
 require_relative 'board'
 require_relative 'player'
