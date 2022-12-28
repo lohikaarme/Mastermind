@@ -26,7 +26,7 @@ class Game
     @board.print_board
     # computer turn(maybe in setup?)
     # player turns
-    player_turn(@pegs)
+    human_turn(@pegs)
     @code_reference = code_update(@key, @turn)
     @board.update_board(@turn, @turn_num)
     @board.update_reference(@code_reference, @turn_num)
@@ -81,13 +81,16 @@ class Game
     puts "Key: #{@key}"
   end
 
-  def player_turn(pegs)
+  def human_turn(pegs)
     @turn = []
     puts "Select #{pegs} colors from: #{@code_pegs}"
     pegs.times do
-      @turn << gets.chomp # .match(@code_pegs), need to sanitize the input
+      puts "Turn: #{@turn}"
+      peg = gets.chomp
+      redo unless @code_pegs.include?(peg)
+      @turn << peg
     end
-    p @turn
+    puts "Turn: #{@turn}"
   end
 
   # rubocop:disable Metrics/MethodLength
