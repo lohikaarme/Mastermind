@@ -10,18 +10,17 @@ class Game
     @game = true
     @board = Board.new
     @key = []
-    @game_type = ''
+    @play_type = ''
     @code_breaker = ''
     @code_maker = ''
     @code_pegs = %w[RD BU YW GN WH BK]
     @pegs = 4 # assuming 4 slots for guesses
     @turn_num = 0
+    play_type_setup
   end
 
   def play
     # setup
-    play_type
-    game_setup
     # render board
     @board.print_board
     # computer turn(maybe in setup?)
@@ -35,20 +34,20 @@ class Game
     # end_game
   end
 
-  def play_type
+  def play_type_setup
     loop do
       puts 'Please chose game type:'
       puts '1: Code Breaker = Human, Code Maker = AI'
       puts '2: Code Breaker = AI, Code Maker = Human'
-      @game_type = gets.to_i
-      return if [1, 2].include?(@game_type)
-
-      redo
+      @play_type = gets.to_i
+      redo unless [1, 2].include?(@play_type)
+      game_setup
+      return
     end
   end
 
   def game_setup
-    case @game_type
+    case @play_type
     when 1
       @code_breaker = 'Human'
       @code_maker = 'AI'
