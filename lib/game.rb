@@ -71,11 +71,14 @@ class Game
 
   def human_key(pegs)
     @key = []
+    puts "Please select #{pegs} pegs from #{@code_pegs}"
     pegs.times do
+      puts "Key: #{@key}"
       peg = gets.chomp
       redo unless @code_pegs.include?(peg)
-      @key << @code_pegs.sample
+      @key << peg
     end
+    puts "Key: #{@key}"
   end
 
   def player_turn(pegs)
