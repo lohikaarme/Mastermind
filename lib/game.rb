@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'board'
+require_relative 'player'
 require_relative 'ai'
 
 # Game logic
@@ -16,23 +17,20 @@ class Game
     @code_maker = ''
     @code_pegs = %w[RD BU YW GN WH BK]
     @pegs = 4 # assuming 4 slots for guesses
+    @turn = []
     @turn_num = 0
     play_type_setup
   end
 
   def play
-    # setup
-    # render board
     @board.print_board
     # computer turn(maybe in setup?)
-    # player turns
-    human_turn(@pegs)
+    @turn = Player.player_turn(@pegs, @code_pegs)
     @code_reference = code_update(@key, @turn)
     @board.update_board(@turn, @turn_num)
     @board.update_reference(@code_reference, @turn_num)
     @board.print_board
     win_check(@turn, @key)
-    # end_game
   end
 
   def play_type_setup
@@ -56,34 +54,10 @@ class Game
     when 2
       @code_breaker = 'AI'
       @code_maker = 'Human'
-      human_key(@pegs)
+      @key = Player.player_key(@pegs, @code_pegs)
     else
       game.game = false
     end
-  end
-
-  def human_key(pegs)
-    @key = []
-    puts "Please select #{pegs} pegs from #{@code_pegs}"
-    pegs.times do
-      puts "Key: #{@key}"
-      peg = gets.chomp
-      redo unless @code_pegs.include?(peg)
-      @key << peg
-    end
-    puts "Key: #{@key}"
-  end
-
-  def human_turn(pegs)
-    @turn = []
-    puts "Select #{pegs} colors from: #{@code_pegs}"
-    pegs.times do
-      puts "Turn: #{@turn}"
-      peg = gets.chomp
-      redo unless @code_pegs.include?(peg)
-      @turn << peg
-    end
-    puts "Turn: #{@turn}"
   end
 
   # rubocop:disable Metrics/MethodLength
