@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'board'
+require_relative 'ai'
 
 # Game logic
 class Game
@@ -51,7 +52,7 @@ class Game
     when 1
       @code_breaker = 'Human'
       @code_maker = 'AI'
-      ai_key(@pegs)
+      @key = AI.ai_key(@pegs, @code_pegs)
     when 2
       @code_breaker = 'AI'
       @code_maker = 'Human'
@@ -59,19 +60,6 @@ class Game
     else
       game.game = false
     end
-  end
-
-  def ai_key(pegs)
-    @key = []
-    pegs.times do
-      @key << @code_pegs.sample
-    end
-  end
-
-  def ai_turn; end
-
-  def int_split(value)
-    value.to_s.split('').map { |el| el.to_i }
   end
 
   def human_key(pegs)

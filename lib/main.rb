@@ -6,6 +6,7 @@
 require_relative 'game'
 require_relative 'board'
 require_relative 'player'
+require_relative 'ai'
 require_relative 'render'
 
 def game_start
