@@ -70,6 +70,10 @@ class Game
 
   def ai_turn; end
 
+  def int_split(value)
+    value.to_s.split('').map { |el| el.to_i }
+  end
+
   def human_key(pegs)
     @key = []
     puts "Please select #{pegs} pegs from #{@code_pegs}"
