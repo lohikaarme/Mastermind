@@ -10,7 +10,7 @@ require_relative 'ai'
 require_relative 'render'
 
 def game_start
-  game = Game.new
+  game = Game_Logic.new
   game.play while game.game
   # logic to play_again
 end

@@ -3,9 +3,10 @@
 require_relative 'board'
 require_relative 'player'
 require_relative 'ai'
+require_relative 'render'
 
 # Game logic
-class Game
+class Game_Logic
   attr_reader :game, :turn_num
 
   def initialize

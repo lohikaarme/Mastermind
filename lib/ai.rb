@@ -14,12 +14,9 @@ class AI
 
   def self.ai_turn; end
 
-  def code_separator()
-  end
+  def code_separator; end
 
-  def array_code_combiner(value, pegs)
-
-  end
+  def array_code_combiner(value, pegs); end
 
   def array_code_assembler(value)
     output_array = []
@@ -44,15 +41,52 @@ class AI
     positional_array
   end
 
-  # a = array_positional_builder(5, 1, 4)
-  # p a
+  def self.checker(key, turn)
+    pegs = 0
+    positions = 0
+    turn.each_with_index do |peg, idx|
+      if peg == key[idx]
+        positions += 1
+      elsif key.include?(peg)
+        pegs += 1
+      end
+    end
+    [positions]
+  end
 
-  # # binding.pry
+  @pegs = [1, 2, 3, 4, 5, 6]
+  @combo = @pegs.repeated_permutation(4).to_a
+  @guess = [2,2,1,1]
+  @key = [3,3,3,1]
 
-  # b = array_positional_builder(1, 3, 6**3)
-  # p b
+  @remaining_combos = []
 
-  # c = a & b
-  # p c
+  @current_remaining_combos = []
+  @adding_remaining_combos = []
 
+  p 5 + 5
+
+  def self.matching(key, guess)
+    case checker(key, guess)
+    when [1]
+      @combo.each do |el|
+        el.each_with_index do |e, idx|
+          if (el[idx] == guess[idx] && el[idx+1] != guess[idx] && el[idx+2] != guess[idx] && el[idx+3] != guess[idx])
+            @adding_remaining_combos << el
+        
+
+      end
+    end
+  endgit
+end
+end
+#   p @adding_remaining_combos
+
+ matching(@key,@guess)
+
+# p @adding_remaining_combos.count
+p @adding_remaining_combos.uniq!.count
+
+# p @adding_remaining_combos
+p checker(@key,@guess)
 end
