@@ -15,6 +15,7 @@ class AI
   def self.ai_turn; end
 
   def code_separator()
+  end
 
   def array_code_combiner(value, pegs)
 

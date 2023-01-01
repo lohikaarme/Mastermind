@@ -26,7 +26,7 @@ class Game
     @board.print_board
     # computer turn(maybe in setup?)
     @turn = Player.player_turn(@pegs, @code_pegs)
-    @code_reference = code_update(@key, @turn)
+    @code_reference = code_check(@key, @turn)
     @board.update_board(@turn, @turn_num)
     @board.update_reference(@code_reference, @turn_num)
     @board.print_board
@@ -60,35 +60,17 @@ class Game
     end
   end
 
-  # rubocop:disable Metrics/MethodLength
-
-  def code_update(key, turn)
-    black = []
-    white = []
-    key.each_with_index do |key_el, key_i|
-      turn.each_with_index do |turn_el, turn_i|
-        if turn_el == key_el && turn_i == key_i
-          black << key_i
-        elsif turn_el == key_el
-          white << key_i
-        end
+  def code_check(key, turn)
+    pegs = 0
+    positions = 0
+    turn.each_with_index do |peg, idx|
+      if peg == key[idx]
+        positions += 1
+      elsif key.include?(peg)
+        pegs += 1
       end
     end
-    reference_convert(black, white)
-  end
-
-  # rubocop:enable Metrics/MethodLength
-
-  def reference_convert(black, white)
-    coded = []
-    white -= black # removes duplicate values from white
-    black.uniq.count.times do
-      coded << 'BK'
-    end
-    white.uniq.count.times do
-      coded << 'WH'
-    end
-    coded
+    [positions, pegs]
   end
 
   def win_check(turn, key)
