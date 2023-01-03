@@ -56,8 +56,8 @@ class AI
 
   @pegs = [1, 2, 3, 4, 5, 6]
   @combo = @pegs.repeated_permutation(4).to_a
-  @guess = [2,2,1,1]
-  @key = [3,3,3,1]
+  @guess = [2, 2, 1, 1]
+  @key = [3, 3, 3, 1]
 
   @remaining_combos = []
 
@@ -66,27 +66,27 @@ class AI
 
   p 5 + 5
 
-  def self.matching(key, guess)
+  def self.hash_to_match(arg)
+    Hash[arg.map { |el| [el, 0] }]
+  end
+
+  def self.matching(key, guess, list)
+    hash_map = hash_to_match(list)
     case checker(key, guess)
     when [1]
-      @combo.each do |el|
-        el.each_with_index do |e, idx|
-          if (el[idx] == guess[idx] && el[idx+1] != guess[idx] && el[idx+2] != guess[idx] && el[idx+3] != guess[idx])
-            @adding_remaining_combos << el
-        
-
+      # Generates a list of every combinations that has at least one match with the guess
+      list.each_with_index do |el, _idx|
+        el.each_with_index do |elp, idxp|
+          hash_map[el] += 1 if guess[idxp] == elp
+        end
       end
     end
-  endgit
-end
-end
-#   p @adding_remaining_combos
+    new_list = hash_map.select { |_k, v| v.positive? }
+    p new_list
+    p new_list.count
+  end
 
- matching(@key,@guess)
-
-# p @adding_remaining_combos.count
-p @adding_remaining_combos.uniq!.count
-
-# p @adding_remaining_combos
-p checker(@key,@guess)
+  matching(@key, @guess, @combo)
 end
+# if el[idx] == guess[idx] && el[idx + 1] != guess[idx] && el[idx + 2] != guess[idx] && el[idx + 3] != guess[idx]
+# @adding_remaining_combos << el
