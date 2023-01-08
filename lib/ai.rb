@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'pry-byebug'
+require 'pry'
 
 # AI logic
 class AI
@@ -58,6 +58,7 @@ class AI
   @combo = @pegs.repeated_permutation(4).to_a
   @guess = [2, 2, 1, 1]
   @key = [3, 3, 3, 1]
+  @hash_map
 
   @remaining_combos = []
 
@@ -66,27 +67,52 @@ class AI
 
   p 5 + 5
 
+  # def self.ai_turn
+  #   case checker(key, guess)
+  #   when [1]
+  # end
+
   def self.hash_to_match(arg)
     Hash[arg.map { |el| [el, 0] }]
   end
 
   def self.matching(key, guess, list)
-    hash_map = hash_to_match(list)
+    @hash_map = hash_to_match(list)
     case checker(key, guess)
     when [1]
       # Generates a list of every combinations that has at least one match with the guess
       list.each_with_index do |el, _idx|
         el.each_with_index do |elp, idxp|
-          hash_map[el] += 1 if guess[idxp] == elp
+          @hash_map[el] += 1 if guess[idxp] == elp
         end
       end
     end
-    new_list = hash_map.select { |_k, v| v.positive? }
+    new_list = @hash_map.select { |_k, v| v.positive? }
     p new_list
     p new_list.count
+    @combo = new_list.keys
+    binding.pry
   end
 
+  def self.combination_refresher(list)
+    @combo = list.keys
+  end
+
+  def self.next_guess(list)
+    @hash_map = hash_to_match(list)
+    list.each_with_index do |el, idx|
+      list.each_with_index do |elp, idxp|
+        elp.each_with_index do |elpp, idxpp|
+          @hash_map[el] += 1 if el[idxpp] == elpp
+      end
+    end
+  end
+end
+
   matching(@key, @guess, @combo)
+  p @hash_map.min_by { |_k, v| v}[0]
+
+  binding.pry
 end
 # if el[idx] == guess[idx] && el[idx + 1] != guess[idx] && el[idx + 2] != guess[idx] && el[idx + 3] != guess[idx]
 # @adding_remaining_combos << el
