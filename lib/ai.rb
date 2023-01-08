@@ -79,6 +79,12 @@ class AI
   def self.matching(key, guess, list)
     @hash_map = hash_to_match(list)
     case checker(key, guess)
+    when [0]
+      list.each do |el|
+        @hash_map[el] -= 1 if (el & guess).count > 0
+      end
+      new_list = @hash_map.select { |_k, v| v >= 0 }
+    
     when [1]
       # Generates a list of every combinations that has at least one match with the guess
       list.each_with_index do |el, _idx|
@@ -86,8 +92,8 @@ class AI
           @hash_map[el] += 1 if guess[idxp] == elp
         end
       end
+      new_list = @hash_map.select { |_k, v| v.positive? }
     end
-    new_list = @hash_map.select { |_k, v| v.positive? }
     p new_list
     p new_list.count
     @combo = new_list.keys
