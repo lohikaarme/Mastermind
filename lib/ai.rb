@@ -66,6 +66,18 @@ class AI
     new_array
   end
 
+  def self.list_match(guess_idx, list, sign, matches)
+    list.each_with_index do |el, _idx|
+      el_idx = idx_to_array(el)
+      @hash_map[el] += sign if (el_idx & guess_idx).count >= matches
+    end
+    if sign == -1
+      @hash_map.select { |_k, v| v >= 0 }
+    else
+      @hash_map.select { |_k, v| v.positive? }
+    end
+  end
+
   def self.matching(key, guess, list)
     @hash_map = hash_to_match(list)
     new_list = {}
@@ -73,30 +85,13 @@ class AI
     case checker(key, guess)
 
     when [0]
-      list.each_with_index do |el, _idx|
-        el_idx = idx_to_array(el)
-        @hash_map[el] -= 1 if (el_idx & guess_idx).count >= 1
-      end
-      new_list = @hash_map.select { |_k, v| v >= 0 }
-
+      new_list = list_match(guess_idx, list, -1, 1)
     when [1]
-      list.each_with_index do |el, _idx|
-        el_idx = idx_to_array(el)
-        @hash_map[el] += 1 if (el_idx & guess_idx).count >= 1
-      end
-      new_list = @hash_map.select { |_k, v| v.positive? }
+      new_list = list_match(guess_idx, list, 1, 1)
     when [2]
-      list.each_with_index do |el, _idx|
-        el_idx = idx_to_array(el)
-        @hash_map[el] += 1 if (el_idx & guess_idx).count >= 2
-      end
-      new_list = @hash_map.select { |_k, v| v.positive? }
+      new_list = list_match(guess_idx, list, 1, 2)
     when [3]
-      list.each_with_index do |el, _idx|
-        el_idx = idx_to_array(el)
-        @hash_map[el] += 1 if (el_idx & guess_idx).count >= 3
-      end
-      new_list = @hash_map.select { |_k, v| v.positive? }
+      new_list = list_match(guess_idx, list, 1, 3)
     when [4]
       p 'AI wins'
     end
