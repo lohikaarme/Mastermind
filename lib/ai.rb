@@ -12,12 +12,6 @@ class AI
     key
   end
 
-  def self.ai_turn; end
-
-  def code_separator; end
-
-  def array_code_combiner(value, pegs); end
-
   def array_code_assembler(value)
     output_array = []
     num = value.to_s.split('').map(&:to_i)
@@ -57,47 +51,58 @@ class AI
   @pegs = [1, 2, 3, 4, 5, 6]
   @combo = @pegs.repeated_permutation(4).to_a
   @guess = [2, 2, 1, 1]
-  @key = [3, 3, 3, 1]
-  @hash_map
-
-  @remaining_combos = []
-
-  @current_remaining_combos = []
-  @adding_remaining_combos = []
-
-  p 5 + 5
-
-  # def self.ai_turn
-  #   case checker(key, guess)
-  #   when [1]
-  # end
+  @key = @combo.sample
+  @hash_map = {}
 
   def self.hash_to_match(arg)
     Hash[arg.map { |el| [el, 0] }]
   end
 
+  def self.idx_to_array(array)
+    new_array = []
+    array.each_with_index do |el, idx|
+      new_array << (el + (idx * 0.1).round(1))
+    end
+    new_array
+  end
+
   def self.matching(key, guess, list)
     @hash_map = hash_to_match(list)
+    new_list = {}
+    guess_idx = idx_to_array(guess)
     case checker(key, guess)
+
     when [0]
-      list.each do |el|
-        @hash_map[el] -= 1 if (el & guess).count > 0
+      list.each_with_index do |el, _idx|
+        el_idx = idx_to_array(el)
+        @hash_map[el] -= 1 if (el_idx & guess_idx).count >= 1
       end
       new_list = @hash_map.select { |_k, v| v >= 0 }
-    
+
     when [1]
-      # Generates a list of every combinations that has at least one match with the guess
       list.each_with_index do |el, _idx|
-        el.each_with_index do |elp, idxp|
-          @hash_map[el] += 1 if guess[idxp] == elp
-        end
+        el_idx = idx_to_array(el)
+        @hash_map[el] += 1 if (el_idx & guess_idx).count >= 1
       end
       new_list = @hash_map.select { |_k, v| v.positive? }
+    when [2]
+      list.each_with_index do |el, _idx|
+        el_idx = idx_to_array(el)
+        @hash_map[el] += 1 if (el_idx & guess_idx).count >= 2
+      end
+      new_list = @hash_map.select { |_k, v| v.positive? }
+    when [3]
+      list.each_with_index do |el, _idx|
+        el_idx = idx_to_array(el)
+        @hash_map[el] += 1 if (el_idx & guess_idx).count >= 3
+      end
+      new_list = @hash_map.select { |_k, v| v.positive? }
+    when [4]
+      p 'AI wins'
     end
     p new_list
     p new_list.count
     @combo = new_list.keys
-    binding.pry
   end
 
   def self.combination_refresher(list)
@@ -106,19 +111,21 @@ class AI
 
   def self.next_guess(list)
     @hash_map = hash_to_match(list)
-    list.each_with_index do |el, idx|
-      list.each_with_index do |elp, idxp|
+    list.each_with_index do |el, _idx|
+      list.each_with_index do |elp, _idxp|
         elp.each_with_index do |elpp, idxpp|
           @hash_map[el] += 1 if el[idxpp] == elpp
+        end
       end
     end
+    @guess = @hash_map.min_by { |_k, v| v }[0]
   end
-end
 
-  matching(@key, @guess, @combo)
-  p @hash_map.min_by { |_k, v| v}[0]
+  def self.ai_turn
+    matching(@key, @guess, @combo)
+    next_guess(@combo)
+  end
 
+  p 5 + 5
   binding.pry
 end
-# if el[idx] == guess[idx] && el[idx + 1] != guess[idx] && el[idx + 2] != guess[idx] && el[idx + 3] != guess[idx]
-# @adding_remaining_combos << el
