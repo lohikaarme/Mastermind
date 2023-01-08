@@ -93,11 +93,7 @@ class AI
       end
     end
     @guess = hash_map.min_by { |_k, v| v }[0]
-    last_guess_check(@last_guess, @guess, list)
-  end
-
-  def self.last_guess_check(last_guess, guess, list)
-    @guess = list.sample if guess == last_guess
+    @guess = list.sample if @guess == @last_guess
   end
 
   def self.ai_turn
