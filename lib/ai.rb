@@ -4,35 +4,19 @@ require 'pry'
 
 # AI logic
 class AI
+  @pegs = [1, 2, 3, 4, 5, 6]
+  @combo = @pegs.repeated_permutation(4).to_a
+  @guess = [1, 1, 2, 2]
+  @last_guess = []
+  @key = @combo.sample
+  @hash_map = {}
+
   def self.ai_key(pegs, sym)
     key = []
     pegs.times do
       key << sym.sample
     end
     key
-  end
-
-  def array_code_assembler(value)
-    output_array = []
-    num = value.to_s.split('').map(&:to_i)
-    num.each_with_index do |el, idx|
-      array_positional_builder(el, idx).each do |ell|
-        output_array << ell
-      end
-    end
-    output_array
-  end
-
-  def array_positional_builder(value, idx)
-    # takes value and output a set of arrays with that value at a specified position
-    i = 0
-    positional_array = []
-    while i < 6**3 # need total pegs guessed less one
-      num = format('%03d', i.to_s(6)) # formatted with leading zeros
-      positional_array << num.split('').insert(idx, value).map(&:to_i)
-      i += 1
-    end
-    positional_array
   end
 
   def self.checker(key, turn)
@@ -47,12 +31,6 @@ class AI
     end
     [positions]
   end
-
-  @pegs = [1, 2, 3, 4, 5, 6]
-  @combo = @pegs.repeated_permutation(4).to_a
-  @guess = [2, 2, 1, 1]
-  @key = @combo.sample
-  @hash_map = {}
 
   def self.hash_to_match(arg)
     Hash[arg.map { |el| [el, 0] }]
@@ -71,6 +49,7 @@ class AI
       el_idx = idx_to_array(el)
       @hash_map[el] += sign if (el_idx & guess_idx).count >= matches
     end
+    @hash_map[@guess] = 0
     if sign == -1
       @hash_map.select { |_k, v| v >= 0 }
     else
@@ -94,6 +73,7 @@ class AI
       new_list = list_match(guess_idx, list, 1, 3)
     when [4]
       p 'AI wins'
+      p "key:#{@key}, Guess#{@guess}"
     end
     p new_list
     p new_list.count
@@ -106,6 +86,7 @@ class AI
 
   def self.next_guess(list)
     @hash_map = hash_to_match(list)
+    @last_guess = @guess
     list.each_with_index do |el, _idx|
       list.each_with_index do |elp, _idxp|
         elp.each_with_index do |elpp, idxpp|
@@ -116,9 +97,15 @@ class AI
     @guess = @hash_map.min_by { |_k, v| v }[0]
   end
 
+  def self.last_guess_check(last_guess, guess, list)
+    @guess = list.sample if guess == last_guess
+  end
+
+
   def self.ai_turn
     matching(@key, @guess, @combo)
     next_guess(@combo)
+    last_guess_check(@last_guess, @guess, @combo)
   end
 
   p 5 + 5
