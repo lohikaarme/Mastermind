@@ -68,10 +68,10 @@ class AI
     end
   end
 
-  def self.list_approx(guess, list)
+  def self.list_approx(guess, list, matches)
     hash_map = array_to_hash(list)
     list.each_with_index do |el, _idx|
-      hash_map[el] += 1 if (el & guess).count.positive?
+      hash_map[el] += 1 if (el & guess).count >= matches
     end
     hash_map[@guess] = 0
     hash_map.select { |_k, v| v.positive? }
@@ -85,19 +85,13 @@ class AI
     when [0, 0]
       new_list = list_match(guess_idx, list, -1, 1)
     when [0, 1], [0, 2], [0, 3], [0, 4]
-      new_list = list_approx(guess, list)
-    when [1, 0], [1, 1], [1, 2], [1, 3]
-      new_list = list_match(guess_idx, list, 1, 1)
-    when [2, 0], [2, 1], [2, 2], [2, 3]
-      new_list = list_match(guess_idx, list, 1, 2)
-    when [3, 0], [3, 1], [3, 2], [3, 3]
-      new_list = list_match(guess_idx, list, 1, 3)
+      new_list = list_approx(guess, list, check[1])
     when [4, 0], [4, 1], [4, 2], [4, 3]
       p 'AI wins'
       p "Key:#{@key}, Guess#{@guess}"
     else
-      list = list.reject { |el| el == @guess }
-      new_list = list_match(guess_idx, list, 1, 0)
+      temp_new_list = list_match(guess_idx, list, 1, check[0]).keys
+      new_list = list_approx(guess, temp_new_list, check[1])
     end
     p new_list
     p new_list.count
