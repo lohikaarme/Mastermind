@@ -54,11 +54,12 @@ class AI
     new_array
   end
 
-  def self.list_match(guess_idx, list, sign, matches)
+  def self.list_match(guess, list, sign, matches)
     hash_map = array_to_hash(list)
+    guess_idx = idx_to_array(guess)
     list.each_with_index do |el, _idx|
       el_idx = idx_to_array(el)
-      hash_map[el] += sign if (el_idx & guess_idx).count >= matches
+      hash_map[el] += sign if (el_idx & guess_idx).count >= matches[0] && (el & guess).count >= matches[1]
     end
     hash_map[@guess] = 0
     if sign == -1
@@ -68,33 +69,21 @@ class AI
     end
   end
 
-  def self.list_approx(guess, list, matches)
-    hash_map = array_to_hash(list)
-    list.each_with_index do |el, _idx|
-      hash_map[el] += 1 if (el & guess).count >= matches
-    end
-    hash_map[@guess] = 0
-    hash_map.select { |_k, v| v.positive? }
-  end
-
   def self.matching(key, guess, list)
     new_list = {}
-    guess_idx = idx_to_array(guess)
     check = checker(key, guess)
     case check
     when [0, 0]
-      new_list = list_match(guess_idx, list, -1, 1)
-    when [0, 1], [0, 2], [0, 3], [0, 4]
-      new_list = list_approx(guess, list, check[1])
+      new_list = list_match(guess, list, -1, [0, 1])
     when [4, 0], [4, 1], [4, 2], [4, 3]
       p 'AI wins'
       p "Key:#{@key}, Guess#{@guess}"
     else
-      temp_new_list = list_match(guess_idx, list, 1, check[0]).keys
-      new_list = list_approx(guess, temp_new_list, check[1])
+      new_list = list_match(guess, list, 1, check)
     end
     p new_list
     p new_list.count
+    p check
     @combo = new_list.keys
   end
 
@@ -112,7 +101,7 @@ class AI
         end
       end
     end
-    @guess = hash_map.min_by { |_k, v| v }[0]
+    @guess = hash_map.max_by { |_k, v| v }[0]
     @guess = list.sample if @guess == @last_guess
   end
 
