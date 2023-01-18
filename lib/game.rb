@@ -64,11 +64,22 @@ class Game_Logic
   def code_check(key, turn)
     pegs = 0
     positions = 0
+    temp_key = key.dup
+    flag = Array.new(key.count, true)
     turn.each_with_index do |peg, idx|
-      if peg == key[idx]
-        positions += 1
-      elsif key.include?(peg)
+      next unless peg == key[idx]
+
+      positions += 1
+      flag[idx] = false
+      temp_key.delete_at(temp_key.find_index(peg))
+    end
+    turn.each_with_index do |peg, idx|
+      temp_key.each_with_index do |pegp, _idxp|
+        next unless peg == pegp && flag[idx] == true
+
         pegs += 1
+        flag[idx] = false
+        temp_key.delete_at(temp_key.find_index(peg))
       end
     end
     [positions, pegs]

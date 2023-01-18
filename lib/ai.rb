@@ -109,7 +109,4 @@ class AI
     matching(@key, @guess, @combo)
     next_guess(@combo)
   end
-
-  p 5 + 5
-  binding.pry
 end
