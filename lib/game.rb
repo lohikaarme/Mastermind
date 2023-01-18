@@ -7,7 +7,7 @@ require_relative 'render'
 
 # Game logic
 class Game_Logic
-  attr_reader :game, :turn_num
+  attr_reader :game, :turn_num, :key
 
   def initialize
     @game = true
@@ -26,12 +26,21 @@ class Game_Logic
   def play
     @board.print_board
     # computer turn(maybe in setup?)
-    @turn = Player.player_turn(@pegs, @code_pegs)
+    # @turn = Player.player_turn(@pegs, @code_pegs)
+    @turn = turn_selector(@play_type)
     @code_reference = code_check(@key, @turn)
     @board.update_board(@turn, @turn_num)
     @board.update_reference(@code_reference, @turn_num)
     @board.print_board
     win_check(@turn, @key)
+  end
+
+  def turn_selector(type)
+    if type == 1
+      Player.player_turn(@pegs, @code_pegs)
+    elsif type == 2
+      AI.ai_turn(@key, @code_pegs)
+    end
   end
 
   def play_type_setup

@@ -1,14 +1,14 @@
 # frozen_string_literal: true
-
+require_relative 'game'
 require 'pry'
 
 # AI logic
 class AI
-  @pegs = [1, 2, 3, 4, 5, 6]
-  @combo = @pegs.repeated_permutation(4).to_a
-  @guess = [1, 1, 2, 2]
-  @last_guess = []
-  @key = @combo.sample
+    @pegs = [1, 2, 3, 4, 5, 6]
+    @combo = @pegs.repeated_permutation(4).to_a
+    @guess = [1, 1, 2, 2]
+    @last_guess = []
+    @key = []
 
   def self.ai_key(pegs, sym)
     key = []
@@ -105,8 +105,27 @@ class AI
     @guess = list.sample if @guess == @last_guess
   end
 
-  def self.ai_turn
+  def self.key_map(key, pegs)
+    temp_key = []
+    key.each do |el|
+      temp_key << pegs.find_index(el) + 1
+    end
+    temp_key
+  end
+
+  def self.peg_map(guess, pegs)
+    temp_guess = []
+    guess.each do |el|
+      temp_guess << pegs[el] - 1
+    end
+    temp_guess
+  end
+
+  def self.ai_turn(key, pegs)
+    @key = key_map(key, pegs)
+    binding.pry
     matching(@key, @guess, @combo)
     next_guess(@combo)
+    peg_map(@last_guess, pegs)
   end
 end
