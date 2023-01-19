@@ -1,14 +1,15 @@
 # frozen_string_literal: true
+
 require_relative 'game'
 require 'pry'
 
 # AI logic
 class AI
-    @pegs = [1, 2, 3, 4, 5, 6]
-    @combo = @pegs.repeated_permutation(4).to_a
-    @guess = [1, 1, 2, 2]
-    @last_guess = []
-    @key = []
+  @pegs = [1, 2, 3, 4, 5, 6]
+  @combo = @pegs.repeated_permutation(4).to_a
+  @guess = [1, 1, 2, 2]
+  @last_guess = []
+  @key = []
 
   def self.ai_key(pegs, sym)
     key = []
@@ -76,8 +77,7 @@ class AI
     when [0, 0]
       new_list = list_match(guess, list, -1, [0, 1])
     when [4, 0], [4, 1], [4, 2], [4, 3]
-      p 'AI wins'
-      p "Key:#{@key}, Guess#{@guess}"
+      return
     else
       new_list = list_match(guess, list, 1, check)
     end
@@ -101,7 +101,7 @@ class AI
         end
       end
     end
-    @guess = hash_map.max_by { |_k, v| v }[0]
+    @guess = hash_map.min_by { |_k, v| v }[0]
     @guess = list.sample if @guess == @last_guess
   end
 
@@ -116,14 +116,14 @@ class AI
   def self.peg_map(guess, pegs)
     temp_guess = []
     guess.each do |el|
-      temp_guess << pegs[el] - 1
+      temp_guess << pegs[(el - 1)]
     end
     temp_guess
   end
 
   def self.ai_turn(key, pegs)
     @key = key_map(key, pegs)
-    binding.pry
+    # binding.pry
     matching(@key, @guess, @combo)
     next_guess(@combo)
     peg_map(@last_guess, pegs)

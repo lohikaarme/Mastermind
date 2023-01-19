@@ -27,4 +27,3 @@ end
 # BK = Black
 
 game_start
-

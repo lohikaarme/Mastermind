@@ -36,9 +36,10 @@ class Game_Logic
   end
 
   def turn_selector(type)
-    if type == 1
+    case type
+    when 1
       Player.player_turn(@pegs, @code_pegs)
-    elsif type == 2
+    when 2
       AI.ai_turn(@key, @code_pegs)
     end
   end
