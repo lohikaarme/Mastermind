@@ -2,7 +2,6 @@
 
 # mastermind exercise to replicate the classic game
 
-# require 'pry-byebug'
 require_relative 'game'
 require_relative 'board'
 require_relative 'player'
@@ -20,6 +19,7 @@ def play_again
 end
 
 # RD = Red
+
 # BU = Blue
 # YW = Yellow
 # GN = Green

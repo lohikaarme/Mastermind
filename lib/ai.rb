@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'game'
-require 'pry'
-
 # AI logic
 class AI
   @pegs = [1, 2, 3, 4, 5, 6]
@@ -55,12 +52,19 @@ class AI
     new_array
   end
 
+  def self.match_count(array1, array2)
+    temp_ar1 = array1.dup
+    temp_ar2 = array2.dup
+    temp_ar1.count { |e| (index = temp_ar2.index e) and (temp_ar2.delete_at index) }
+  end
+
   def self.list_match(guess, list, sign, matches)
     hash_map = array_to_hash(list)
     guess_idx = idx_to_array(guess)
     list.each_with_index do |el, _idx|
       el_idx = idx_to_array(el)
-      hash_map[el] += sign if (el_idx & guess_idx).count >= matches[0] && (el & guess).count >= matches[1]
+      # hash_map[el] += sign if (el_idx & guess_idx).count >= matches[0] && (el & guess).count >= matches[1]
+      hash_map[el] += sign if match_count(el_idx, guess_idx) >= matches[0] && match_count(el, guess) >= matches[1]
     end
     hash_map[@guess] = 0
     if sign == -1
@@ -71,6 +75,7 @@ class AI
   end
 
   def self.matching(key, guess, list)
+    # binding.pry
     new_list = {}
     check = checker(key, guess)
     case check

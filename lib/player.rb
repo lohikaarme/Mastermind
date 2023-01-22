@@ -7,11 +7,11 @@ class Player
     puts "Please select #{pegs} pegs from #{sym}"
     pegs.times do
       puts "Key: #{key}"
-      peg = gets.chomp
+      peg = gets.chomp.upcase
       redo unless sym.include?(peg)
       key << peg
     end
-    puts "Key: #{@ey}"
+    puts "Key: #{@key}"
     key
   end
 
@@ -20,7 +20,7 @@ class Player
     puts "Select #{pegs} colors from: #{sym}"
     pegs.times do
       puts "Turn: #{turn}"
-      peg = gets.chomp
+      peg = gets.chomp.upcase
       redo unless sym.include?(peg)
       turn << peg
     end
